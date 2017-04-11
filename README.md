@@ -22,11 +22,11 @@ The file [Plutora REST API Primer.pdf](Plutora%20REST%20API%20Primer.pdf) explai
 
 ## Instructions
 - Create a credentials.cfg file from [credentials.cfg_template](credentials.cfg_template), adding your credentials and Plutora instance details.  Not that if you leave the password blank, you will be prompted for it at the command line.
-- Create a simple test file or used the one provided
--- Add the following to a file [test.py](test.py) and run
+- Create a simple test file or used the one provided by adding the following to a file [test.py](test.py)
 ```
 import plutora
 print plutora.api("GET", "me")
 ```
-- python test.py
-The script should return your email address.
+- And run
+```python test.py```
+- The script should return your email address.
