@@ -31,4 +31,4 @@ print plutora.api("GET", "me")
 - And run
 ```python test.py```
 - The script should return your email address.
-- You can also run ```python apiSamples```, but note that there are "if False:" flags set on all the examples, so the each will be skipped unless its flag is changed to "if True:" 
+- You can also run ```python apiSamples.py```, but note that there are ```if False:``` flags set on all the examples, so the each will be skipped unless its flag is changed to ```if True:``` 
