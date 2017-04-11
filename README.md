@@ -1,5 +1,5 @@
 # restApiLibrary - Plutora REST API library and samples
-The Python file [plutora.py] provides helper functions for creating Plutora REST API scripts.  These include:
+The Python file [plutora.py](plutora.py) provides helper functions for creating Plutora REST API scripts.  These include:
 - Read in credentials from a file
 - Wrapper to make REST calls
 - Transform an array response into a look up table
