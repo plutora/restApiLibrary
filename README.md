@@ -1,5 +1,5 @@
 # restApiLibrary - Plutora REST API library and samples
-Python 2.7 code to help users develop script to load data and create objects in Plutora
+Python 2.7 code to help users develop scripts to load data and create objects in Plutora
 ## Plutora REST API Python Library
 The Python file [plutora.py](plutora.py) provides helper functions for creating Plutora REST API scripts.  These include:
 - Read in credentials from a file
