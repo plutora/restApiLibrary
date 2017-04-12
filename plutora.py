@@ -29,11 +29,11 @@
 #	Transform a list of multiple field-value pairs into a dictionary of key-value pairs
 # guidByPathAndName()
 #	Return the GUID of the object at an API path of a given name
+# getAccessToken()
+# 	Returns access_token
 #
 # Private Functions
 # -----------------
-# __getAccessToken()
-# 	Returns access_token
 # __getUserCredentials()
 # 	Returns username and password from the command line
 #
@@ -69,7 +69,7 @@ def __getUserCredentials(defaultUser):
 if not password:
 	username,password = __getUserCredentials(username)
 
-def __getAccessToken():
+def getAccessToken():
 	# Returns access_token
 	#
 	# authUrl:
@@ -98,7 +98,7 @@ def __getAccessToken():
 		exit()
 	access_token = response.json()['access_token']
 	return access_token
-	# ------End of def __getAccessToken()-----------
+	# ------End of def getAccessToken()-----------
 
 def api(verb, api, data=""):
 	# Make REST API call to Plutora
@@ -129,7 +129,7 @@ def api(verb, api, data=""):
 	# If successful, Returns: "" or JSON-formatted response
 	# On failure, Returns: response text
 	#
-	access_token=__getAccessToken()
+	access_token=getAccessToken()
 	fullUrl = baseUrl + api
 	headers={}
 	headers['authorization']="bearer " + access_token
