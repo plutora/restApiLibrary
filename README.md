@@ -1,5 +1,5 @@
 # restApiLibrary - Plutora REST API library and samples
-Python 2.7 code to help users develop scripts to load data and create objects in Plutora
+Python 2.7 code to help users develop scripts to load data and create objects in Plutora. See [Plutora REST API Documentation](http://help.plutora.com/knowledge-base/visualize-plutoras-api-with-swagger/) for additional details.
 ## Plutora REST API Python Library
 The Python file [plutora.py](plutora.py) provides helper functions for creating Plutora REST API scripts.  These include:
 - Read in credentials from a file
@@ -19,11 +19,11 @@ The Python file [apiSamples.py](apiSamples.py) provides example calls that illus
 - Delete the Environments created above by loading the CSV which includes the GUIDs to be deleted
 
 ## Plutora REST API Primer
-The file [Plutora REST API Primer.pdf](Plutora%20REST%20API%20Primer.pdf) explains in detail how to use the Plutora REST API along with some examples.  These examples are also implemented in the Python script file [primerImplementations]
+The file [Plutora REST API Primer.pdf](Plutora%20REST%20API%20Primer.pdf) explains in detail how to use the Plutora REST API along with some examples.  These examples are also implemented in the Python script file [primerImplementations.py](primerImplementations.py)
 
 ## Instructions
 - Create a credentials.cfg file from [credentials.cfg_template](credentials.cfg_template), adding your credentials and Plutora instance details.  Not that if you leave the password blank, you will be prompted for it at the command line.
-- Create a simple test file or used the one provided by adding the following to a file [test.py](test.py)
+- Create a simple test file or used [the one provided](test.py) by adding the following to a file **test.py**:
 ```
 import plutora
 print plutora.api("GET", "me")
