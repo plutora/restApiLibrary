@@ -19,7 +19,7 @@ The Python file [apiSamples.py](apiSamples.py) provides example calls that illus
 - Delete the Environments created above by loading the CSV which includes the GUIDs to be deleted
 
 ## Plutora REST API Primer
-The file [Plutora REST API Primer.pdf](Plutora%20REST%20API%20Primer.pdf) explains in detail how to use the Plutora REST API along with some examples.  These examples are also implemented in the Python script file [primerImplementations]
+The file [Plutora REST API Primer.pdf](Plutora%20REST%20API%20Primer.pdf) explains in detail how to use the Plutora REST API along with some examples.  These examples are also implemented in the Python script file [primerImplementations](primerImplementations)
 
 ## Instructions
 - Create a credentials.cfg file from [credentials.cfg_template](credentials.cfg_template), adding your credentials and Plutora instance details.  Not that if you leave the password blank, you will be prompted for it at the command line.
