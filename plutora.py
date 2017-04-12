@@ -56,9 +56,6 @@ client_secret = data["credentials"]["client_secret"]
 username = data["credentials"]["username"]
 password = data["credentials"]["password"]
 
-if not password:
-	username,password = __getUserCredentials(username)
-		
 def __getUserCredentials(defaultUser):
 	# Prompts user for username then password (no echo)
 	#
@@ -68,7 +65,10 @@ def __getUserCredentials(defaultUser):
 	password = getpass.getpass('Password: ')
 	return username,password
 	# ------End of def __getUserCredentials()-----------
-	
+
+if not password:
+	username,password = __getUserCredentials(username)
+
 def __getAccessToken():
 	# Returns access_token
 	#
