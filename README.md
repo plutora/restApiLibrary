@@ -21,6 +21,9 @@ The Python file [apiSamples.py](apiSamples.py) provides example calls that illus
 ## Command line Plutora REST API caller
 The Python file [apiCaller.py](apiCaller.py) can be used to issue REST calls from the command line.  ```python apiCaller.py GET systems``` will return a JSON list of the the Systems in the users Plutora instance.
 
+## Generate api_key for Plutora Swagger REST API Documentation
+The Plutora Swagger REST API Documentation requires an api_key to run API commands.  The Python script [getAccessToken.py](getAccessToken.py) can be used to generte an api_key, ```python getAccessToken.py``` will return a token value that can be used in Swagger.
+
 ## Plutora REST API Primer
 The file [Plutora REST API Primer.pdf](Plutora%20REST%20API%20Primer.pdf) explains in detail how to use the Plutora REST API along with some examples.  These examples are also implemented in the Python script file [primerImplementations.py](primerImplementations.py)
 
