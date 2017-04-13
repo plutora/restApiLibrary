@@ -27,11 +27,11 @@ for env in environments:
 	environment = plutora.api("GET","environments/"+env['id'])
 	row = {
 		"name": environment['name'],
-		"description": environment['description'],
-		"url": environment['url'],
+		#"description": environment.get('description',''),
+		"url": environment.get('url',''),
 		"vendor": environment['vendor'],
 		"linkedSystem": systems[environment['linkedSystemId']],
-		"environmentMgr": environment['environmentMgr'],
+		"environmentMgr": environment.get('environmentMgr',''),
 		"usageWorkItem": useFor[environment['usageWorkItemId']],
 		"environmentStatus": envStatatus[environment['environmentStatusId']],
 		"color": environment['color'],

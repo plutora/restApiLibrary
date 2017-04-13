@@ -1,8 +1,8 @@
 ## Export Releases to CSV file
 # TODO: Either add additionalInformation fields or separate script
 #
-import plutora,csv
-csvFileName = 'sysExport.csv'
+import plutora,csv,urllib
+csvFileName = 'releaseExport.csv'
 fieldnames = [
 	"identifier",
 	"name",
@@ -34,23 +34,24 @@ csvfileWriter.writeheader()
 releases = plutora.api("GET","releases")
 for rel in releases:
 	release = plutora.api("GET","releases/"+rel['id'])
+	print "Processing release " + release['name']
 	row = {
+		# Required
+		"organization": organizations[release['organizationId']],
 		"identifier": release['identifier'],
 		"name": release['name'],
-		"summary": release['summary'],
-		"releaseType": releaseTypes[release['releaseTypeId']],
-		"releaseType": release['releaseType'],
-		"location": release['location'],
-		"releaseStatusType": releaseStatusTypes[release['releaseStatusTypeId']],
-		"releaseRiskLevel": releaseRiskLevels[release['releaseRiskLevelId']],
 		"implementationDate": release['implementationDate'],
-		"displayColor": release['displayColor'],
-		"organization": organizations[release['organizationId']],
-		#"manager": managers[release['managerId']],
-		#"parentRelease": parentReleases[release['parentReleaseId']],
-		"plutoraReleaseType": release['plutoraReleaseType'],
-		"releaseProjectType": release['releaseProjectType']
+		"releaseType": releaseTypes[release['releaseTypeId']],
+		"releaseRiskLevel": releaseRiskLevels[release['releaseRiskLevelId']],
+		# Optional
+		#"summary": None if release['summary']==None else release['summary'].replace('\n',''),
+		"location": release.get('location',''),
+		"releaseStatusType": releaseStatusTypes[release['releaseStatusTypeId']],
+		"displayColor": release.get('displayColor',''),
+		"manager": release.get('manager',''),
+		"parentRelease": release.get('parentRelease',''),
+		"plutoraReleaseType": release.get('plutoraReleaseType',''),
+		"releaseProjectType": release.get('releaseProjectType','')
 	}
-	print "Writing release " + release['name']
 	csvfileWriter.writerow(row)
 csvfile.close()

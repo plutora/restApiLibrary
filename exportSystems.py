@@ -25,7 +25,7 @@ for sys in systems:
 		"vendor":system['vendor'],
 		"status":system['status'],
 		"organization":organizations[system['organizationId']],
-		"description":system['description'],
+		#"description":system.get('description',''),
 		"isAllowEdit":system['isAllowEdit'],
 		"inMyOrganization":system['inMyOrganization']
 	}
