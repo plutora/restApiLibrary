@@ -166,3 +166,31 @@ def guidByPathAndName(path, name, field="name"):
 	return guidList[name]
 	# ------End of def guidByPathAndName()---------------			
 	
+objectFields = {
+
+	"systems" : [
+		{"name": "Name", "required": True, "lookup": False, "values": []},
+		{"name": "Vendor", "required": True, "lookup": False, "values": []},
+		{"name": "Status", "required": True, "lookup": False, "values": ["Active","Inactive"]},
+		{"name": "Organization", "required": True, "lookup": True, "values": []},
+		{"name": "Description", "required": True, "lookup": False, "values": []}
+	],
+	"environments" : [
+		{"name": "Name", "required": True, "lookup": False, "values": []},
+		{"name": "Description", "required": False, "lookup": False, "values": []},
+		{"name": "URL", "required": False, "lookup": False, "values": []},
+		{"name": "Vendor", "required": True, "lookup": False, "values": []},
+		{"name": "LinkedSystem", "required": True, "lookup": True, "values": []},
+		{"name": "EnvironmentMgr", "required": False, "lookup": False, "values": []},
+		{"name": "UsageWorkItem", "required": True, "lookup": True, "values": []},
+		{"name": "EnvironmentStatus", "required": True, "lookup": True, "values": []},
+		{"name": "Color", "required": True, "lookup": False, "values": []},
+		{"name": "IsSharedEnvironment", "required": True, "lookup": False, "values": []},
+		{"name": "hostName", "required": False, "lookup": False, "values": []},
+		{"name": "StackLayer", "required": False, "lookup": True, "values": []},
+		{"name": "StackLayerType", "required": False, "lookup": False, "values": []},
+		{"name": "ComponentName", "required": False, "lookup": False, "values": []},
+		{"name": "Version", "required": False, "lookup": False, "values": []}
+	]
+	
+}

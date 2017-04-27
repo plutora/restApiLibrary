@@ -151,7 +151,7 @@ def main(argv):
 # Only run from the command line
 if __name__ == "__main__":
 	filename,objectType = main(sys.argv[1:])
-	rowReader = getRows(filename,objectFields[objectType])
+	rowReader = getRows(filename,plutora.objectFields[objectType])
 	if (objectType=="systems"):
 		systems(rowReader)
 	elif (objectType=="environments"):
