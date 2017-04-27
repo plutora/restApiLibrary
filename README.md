@@ -44,9 +44,8 @@ The Plutora Swagger REST API Documentation requires an api_key to run API comman
 
 ### Export Examples
 These Python scripts illustrate how to export various Plutora objects to CSV files.  These are very much works-in-progress with limited testing.
-- [exportSystems.py](exportSystems.py) - Export Systems
-- [exportEnvironments.py](exportEnvironments.py) - Export Environments
+- [exportObjects.py](exportObjects.py) - Export Plutora objects from CSV files (currently supports Systems and Environments)
 - [exportReleases.py](exportReleases.py) - Export Releases
 
 ### Import Examples
-(Coming soon)
+- [importObjects.py](importObjects.py) - Import Plutora objects from CSV files (currently supports Systems and Environments)

@@ -2,7 +2,7 @@
 #
 # Import new or update existing Plutora objects via CSV file
 #
-# python importObjects --csvFile=<filepath without extension> --objectType=<systems|environments>
+# python importObjects.py --csvFile <filepath without extension> --objectType <systems|environments>
 # TODO: add Releases, and remaining objects
 #
 # Columns
@@ -16,35 +16,6 @@
 #					Name,Description,URL,Vendor,LinkedSystem,EnvironmentMgr,UsageWorkItem,EnvironmentStatus,Color,IsSharedEnvironment,hostName,StackLayer,StackLayerType,ComponentName,Version
 #
 import plutora
-
-objectFields = {
-
-	"systems" : [
-		{"name": "Name", "required": True, "lookup": False, "values": []},
-		{"name": "Vendor", "required": True, "lookup": False, "values": []},
-		{"name": "Status", "required": True, "lookup": False, "values": ["Active","Inactive"]},
-		{"name": "Organization", "required": True, "lookup": True, "values": []},
-		{"name": "Description", "required": True, "lookup": False, "values": []}
-	],
-	"environments" : [
-		{"name": "Name", "required": True, "lookup": False, "values": []},
-		{"name": "Description", "required": False, "lookup": False, "values": []},
-		{"name": "URL", "required": False, "lookup": False, "values": []},
-		{"name": "Vendor", "required": True, "lookup": False, "values": []},
-		{"name": "LinkedSystem", "required": True, "lookup": True, "values": []},
-		{"name": "EnvironmentMgr", "required": False, "lookup": False, "values": []},
-		{"name": "UsageWorkItem", "required": True, "lookup": True, "values": []},
-		{"name": "EnvironmentStatus", "required": True, "lookup": True, "values": []},
-		{"name": "Color", "required": True, "lookup": False, "values": []},
-		{"name": "IsSharedEnvironment", "required": True, "lookup": False, "values": []},
-		{"name": "hostName", "required": False, "lookup": False, "values": []},
-		{"name": "StackLayer", "required": False, "lookup": True, "values": []},
-		{"name": "StackLayerType", "required": False, "lookup": False, "values": []},
-		{"name": "ComponentName", "required": False, "lookup": False, "values": []},
-		{"name": "Version", "required": False, "lookup": False, "values": []}
-	]
-	
-}
 
 def getRows(fileName, requiredFieldNames):
 	# 1. Load CVS file
@@ -75,6 +46,7 @@ def systems(rowReader):
 			'Name': row['Name'],
 			'Description': row['Description'],
 			'Status': row['Status'],
+			# TODO: handle hierarchy
 			'OrganizationId': organizations[row['Organization']],
 			'Vendor': row['Vendor']
 		}		
@@ -128,25 +100,32 @@ def environments(rowReader):
 import sys, getopt
 
 def main(argv):
-   filename = ''
-   objectType = ''
-   usage = 'importObjects.py --csvFile <filePath, no extension> --objectType <systems|environments>'
-   try:
-      opts, args = getopt.getopt(argv,"hf:t:",["csvFile=","objectType="])
-   except getopt.GetoptError:
-      print usage
-      sys.exit(2)
-   for opt, arg in opts:
-      if opt == '-h':
-         print usage
-         sys.exit()
-      elif opt in ("-f", "--csvFile"):
-         filename = arg
-      elif opt in ("-t", "--objectType"):
-         objectType = arg
-   print 'Input file is "', filename + '.csv"'
-   print 'Object type is "', objectType + '"'
-   return filename,objectType
+	filename = ''
+	objectType = ''
+	usage = 'USAGE: python importObjects.py --csvFile <filePath, no extension> --objectType <systems|environments>'
+	try:
+		opts, args = getopt.getopt(argv,"hf:t:",["csvFile=","objectType="])
+	except getopt.GetoptError:
+		print usage
+		sys.exit(2)
+	for opt, arg in opts:
+		if opt == '-h':
+			print usage
+			sys.exit()
+		elif opt in ("-f", "--csvFile"):
+			filename = arg
+		elif opt in ("-t", "--objectType"):
+			objectType = arg
+			if not (arg in ["systems","environments"]):
+				print "Bad object type"
+				print usage
+				sys.exit(3)
+		else:
+			print usage
+			sys.exit(4)
+	print 'Input file is "', filename + '.csv"'
+	print 'Object type is "', objectType + '"'
+	return filename,objectType
 
 # Only run from the command line
 if __name__ == "__main__":
