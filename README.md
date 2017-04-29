@@ -43,9 +43,9 @@ The Python script [apiCaller.py](apiCaller.py) can be used to issue REST calls f
 The Plutora Swagger REST API Documentation requires an api_key to run API commands.  The Python script [getAccessToken.py](getAccessToken.py) can be used to generte an api_key, ```python getAccessToken.py``` will return a token value that can be used in Swagger.
 
 ### Export Examples
-These Python scripts illustrate how to export various Plutora objects to CSV files.  These are very much works-in-progress with limited testing.
-- [exportObjects.py](exportObjects.py) - Export Plutora objects from CSV files (currently supports Systems and Environments)
-- [exportReleases.py](exportReleases.py) - Export Releases
+Python script illustrates how to export various Plutora objects to CSV files.  These are very much works-in-progress with limited testing.
+- [exportObjects.py](exportObjects.py) - Export Plutora objects from CSV files (currently supports Systems, Environments and Releases)
 
 ### Import Examples
-- [importObjects.py](importObjects.py) - Import Plutora objects from CSV files (currently supports Systems and Environments)
+Python script illustrates how to import various Plutora objects to CSV files.  These are very much works-in-progress with limited testing.
+- [importObjects.py](importObjects.py) - Import Plutora objects from CSV files (currently supports Systems, Environments and Releases)
