@@ -191,6 +191,21 @@ objectFields = {
 		{"name": "StackLayerType", "required": False, "lookup": False, "values": []},
 		{"name": "ComponentName", "required": False, "lookup": False, "values": []},
 		{"name": "Version", "required": False, "lookup": False, "values": []}
+	],
+	"releases" : [
+		{"name": "Identifier", "required": True, "lookup": False, "values": []},
+		{"name": "Name", "required": True, "lookup": False, "values": []},
+		{"name": "Summary", "required": False, "lookup": False, "values": []},
+		{"name": "ReleaseType", "required": True, "lookup": True, "values": []},
+		{"name": "Location", "required": True, "lookup": False, "values": []},
+		{"name": "ReleaseStatusType", "required": True, "lookup": True, "values": ["Active","Inactive"]},
+		{"name": "ReleaseRiskLevel", "required": True, "lookup": True, "values": []},
+		{"name": "ImplementationDate", "required": True, "lookup": False, "values": []},
+		{"name": "DisplayColor", "required": True, "lookup": False, "values": []},
+		{"name": "Organization", "required": True, "lookup": True, "values": []},
+		{"name": "Manager", "required": True, "lookup": True, "values": []},
+		{"name": "ParentRelease", "required": False, "lookup": True, "values": []},
+		{"name": "PlutoraReleaseType", "required": True, "lookup": False, "values": ["Enterprise","Integrated","Independent"]},
+		{"name": "ReleaseProjectType", "required": True, "lookup": False, "values": ["IsProject","NotIsProject","None"]}
 	]
-	
 }

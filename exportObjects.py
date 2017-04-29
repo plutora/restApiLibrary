@@ -2,7 +2,7 @@
 #
 # Export Plutora objects to a CSV file
 #
-# python exportObjects.py --csvFile <output filepath without extension> --objectType <systems|environments> --filter <string to match>
+# python exportObjects.py --csvFile <output filepath without extension> --objectType <systems|environments|releases> --filter <string to match>
 # TODO: add Releases, and remaining objects
 #
 #
@@ -18,15 +18,28 @@ def exportObjects(filename,objectType,filter):
 	csvfileWriter.writeheader()
 	objects = plutora.api("GET",objectType)
 	if (objectType=="systems"):
-		organizations = plutora.listToDict(plutora.api("GET","organizations"), "id", "name")	
+		organizations = plutora.listToDict(plutora.api("GET","organizations"), "id", "name")
+		filterKey="name"
 	elif (objectType=="environments"):
 		systems = plutora.listToDict(plutora.api("GET","systems"), "id", "name")
 		useFor = plutora.listToDict(plutora.api("GET","lookupfields/UsedForWorkItem"), "id", "value")
 		envStatatus = plutora.listToDict(plutora.api("GET","lookupfields/EnvironmentStatus"), "id", "value")
 		layers = plutora.listToDict(plutora.api("GET","lookupfields/StackLayer"), "id", "value")
-
+		filterKey="name"
+	elif (objectType=="releases"):
+		organizations = plutora.listToDict(plutora.api("GET","organizations"), "id", "name")
+		releaseTypes = plutora.listToDict(plutora.api("GET","lookupfields/ReleaseType"), "id", "value")
+		releaseStatusTypes = plutora.listToDict(plutora.api("GET","lookupfields/ReleaseStatusType"), "id", "value")
+		releaseRiskLevels = plutora.listToDict(plutora.api("GET","lookupfields/ReleaseRiskLevel"), "id", "value")
+		parentReleases = plutora.listToDict(objects, "id", "identifier")
+		managers = plutora.listToDict(plutora.api("GET","users"), "id", "userName")
+		filterKey="identifier"
+	else:
+		print "Invalid object type"
+		exit(10)
+		
 	for object in objects:
-		if (filter in object['name']):
+		if ((filter in object[filterKey]) or (filter=="")):
 			objectResponse = plutora.api("GET",objectType+"/"+object['id'])
 			if (objectType=="systems"):
 				row = {
@@ -54,7 +67,25 @@ def exportObjects(filename,objectType,filter):
 					"Color": objectResponse['color'],
 					"IsSharedEnvironment": objectResponse['isSharedEnvironment']
 				}
-			print "Writing " + object['name']
+			elif (objectType=="releases"):
+				row = {
+					"Identifier": objectResponse['identifier'],
+					"Name": objectResponse['name'],
+					# TODO: handle summary
+					#"Summary": objectResponse.get('Summary',''),
+					"ReleaseType": releaseTypes[objectResponse['releaseTypeId']],
+					"Location": objectResponse['location'],
+					"ReleaseStatusType": releaseStatusTypes[objectResponse['releaseStatusTypeId']],
+					"ReleaseRiskLevel": releaseRiskLevels[objectResponse['releaseRiskLevelId']],
+					"ImplementationDate": objectResponse['implementationDate'],
+					"DisplayColor": objectResponse['displayColor'],
+					"Organization": organizations[objectResponse['organizationId']],
+					"Manager": managers.get(objectResponse['managerId']),
+					"ParentRelease": parentReleases.get(objectResponse['parentReleaseId']),
+					"PlutoraReleaseType": objectResponse['plutoraReleaseType'],
+					"ReleaseProjectType": objectResponse['releaseProjectType']
+				}
+			print "Writing " + object[filterKey]
 			csvfileWriter.writerow(row)
 	csvfile.close()
 
@@ -63,7 +94,8 @@ import sys, getopt
 def main(argv):
 	filename = ''
 	objectType = ''
-	usage = 'USAGE: python importObjects.py --csvFile <input filePath, no extension> --objectType <systems|environments> --filter <string to match>'
+	filter = ''
+	usage = 'USAGE: python importObjects.py --csvFile <input filePath, no extension> --objectType <systems|environments|releases> --filter <string to match>'
 	try:
 		opts, args = getopt.getopt(argv,"hf:t:m:",["csvFile=","objectType=","filter="])
 	except getopt.GetoptError:
@@ -77,7 +109,7 @@ def main(argv):
 			filename = arg
 		elif opt in ("-t", "--objectType"):
 			objectType = arg
-			if not (arg in ["systems","environments"]):
+			if not (arg in ["systems","environments","releases"]):
 				print "Bad object type"
 				print usage
 				sys.exit(3)

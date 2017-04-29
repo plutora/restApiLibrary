@@ -15,6 +15,10 @@
 #		ID Lookup:	                            *                           *             *                                                    *
 #					Name,Description,URL,Vendor,LinkedSystem,EnvironmentMgr,UsageWorkItem,EnvironmentStatus,Color,IsSharedEnvironment,hostName,StackLayer,StackLayerType,ComponentName,Version
 #
+#	Releases:
+#		Required:	*          *            *           *        *                 *                *                 *             *            *                     *                  *
+#		ID Lookup:	                        *                    *                 *                                                *            *       *
+#					Identifier,Name,Summary,ReleaseType,Location,ReleaseStatusType,ReleaseRiskLevel,ImplementationDate,DisplayColor,Organization,Manager,ParentRelease,PlutoraReleaseType,ReleaseProjectType
 import plutora
 
 def getRows(fileName, requiredFieldNames):
@@ -95,14 +99,58 @@ def environments(rowReader):
 			environmentResponse = plutora.api("POST", "environments", environmentData)
 			environmentApi = "environments/" + environmentResponse['id']
 			print "Created " + environmentApi + " - " + environmentResponse['name']
-			row['environmentGuid']=environmentResponse['id']			
+			row['environmentGuid']=environmentResponse['id']
+
+
+def releases(rowReader):
+	existingObjects = plutora.listToDict(plutora.api("GET","releases"), "identifier", "id")
+	organizations = plutora.listToDict(plutora.api("GET","organizations"), "name", "id")
+	releaseTypes = plutora.listToDict(plutora.api("GET","lookupfields/ReleaseType"), "value", "id")
+	users = plutora.api("GET","users")
+	managers = plutora.listToDict(users, "userName", "id")
+	releaseStatusTypes = plutora.listToDict(plutora.api("GET","lookupfields/ReleaseStatusType"), "value", "id")
+	releaseRiskLevels = plutora.listToDict(plutora.api("GET","lookupfields/ReleaseRiskLevel"), "value", "id")
+	parentReleases = existingObjects
+
+	for row in rowReader:
+		# Common release data whether exists or not
+		releaseData = {
+			'Identifier': row['Identifier'],
+			'Name': row['Name'],
+			'Summary': row['Summary'],
+			'ReleaseTypeId': releaseTypes[row['ReleaseType']],
+			'Location': row['Location'] or "NA",
+			'ReleaseStatusTypeId': releaseStatusTypes[row['ReleaseStatusType']],
+			'ReleaseRiskLevelId': releaseRiskLevels[row['ReleaseRiskLevel']],
+			'ImplementationDate': row['ImplementationDate'],
+			'DisplayColor': row['DisplayColor'],
+			'OrganizationId': organizations[row['Organization']],
+			# TODO: temporary workaround for REST required field which is not required in UI
+			'ManagerId': managers.get(row['Manager'] or users[0]['userName']),
+			'ParentReleaseId': parentReleases.get(row['ParentRelease']),
+			'PlutoraReleaseType': row['PlutoraReleaseType'],
+			'ReleaseProjectType': row['ReleaseProjectType']
+			# TODO: Additional items
+		}		
+		# Does the named object exist?
+		if (row['Identifier'] in existingObjects):	# Exists
+			print "\"" + row['Identifier']+ "\" exists, updating"
+			releaseGuid = existingObjects[row['Identifier']]
+			releaseData['Id'] = releaseGuid
+			releaseResponse = plutora.api("PUT", "releases/"+releaseGuid, releaseData)
+		else:									# Does not exist
+			print "\"" + row['Identifier']+ "\" does not exist, creating"
+			releaseResponse = plutora.api("POST", "releases", releaseData)
+			releaseApi = "releases/" + releaseResponse['id']
+			print "Created " + releaseApi + " - " + releaseResponse['Identifier']
+			row['releaseGuid']=releaseResponse['id']
 			
 import sys, getopt
 
 def main(argv):
 	filename = ''
 	objectType = ''
-	usage = 'USAGE: python importObjects.py --csvFile <filePath, no extension> --objectType <systems|environments>'
+	usage = 'USAGE: python importObjects.py --csvFile <filePath, no extension> --objectType <systems|environments|releases>'
 	try:
 		opts, args = getopt.getopt(argv,"hf:t:",["csvFile=","objectType="])
 	except getopt.GetoptError:
@@ -116,7 +164,7 @@ def main(argv):
 			filename = arg
 		elif opt in ("-t", "--objectType"):
 			objectType = arg
-			if not (arg in ["systems","environments"]):
+			if not (arg in ["systems","environments","releases"]):
 				print "Bad object type"
 				print usage
 				sys.exit(3)
@@ -135,7 +183,8 @@ if __name__ == "__main__":
 		systems(rowReader)
 	elif (objectType=="environments"):
 		environments(rowReader)
-			
+	elif (objectType=="releases"):
+		releases(rowReader)	
 
 
 
