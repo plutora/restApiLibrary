@@ -56,12 +56,12 @@ def systems(rowReader):
 		}		
 		# Does the named object exist?
 		if (row['Name'] in existingObjects):	# Exists
-			print "\"" + row['Name']+ "\" exists, updating"
+			print "System \"" + row['Name']+ "\" exists, updating"
 			systemGuid = existingObjects[row['Name']]
 			systemData['Id'] = systemGuid
 			systemResponse = plutora.api("PUT", "systems/"+systemGuid, systemData)
 		else:									# Does not exist
-			print "\"" + row['Name']+ "\" does not exist, creating"
+			print "System \"" + row['Name']+ "\" does not exist, creating"
 			systemResponse = plutora.api("POST", "systems", systemData)
 			systemApi = "systems/" + systemResponse['id']
 			print "Created " + systemApi + " - " + systemResponse['name']
@@ -90,17 +90,42 @@ def environments(rowReader):
 		}		
 		# Does the named object exist?
 		if (row['Name'] in existingObjects):	# Exists
-			print "\"" + row['Name']+ "\" exists, updating"
+			print "Environment \"" + row['Name']+ "\" exists, updating"
 			environmentGuid = existingObjects[row['Name']]
 			environmentData['Id'] = environmentGuid
 			environmentResponse = plutora.api("PUT", "environments/"+environmentGuid, environmentData)
 		else:									# Does not exist
-			print "\"" + row['Name']+ "\" does not exist, creating"
+			print "Environment \"" + row['Name']+ "\" does not exist, creating"
 			environmentResponse = plutora.api("POST", "environments", environmentData)
 			environmentApi = "environments/" + environmentResponse['id']
 			print "Created " + environmentApi + " - " + environmentResponse['name']
 			row['environmentGuid']=environmentResponse['id']
-
+			environmentGuid = environmentResponse['id']
+		 
+		# Add host
+		if row.get('hostName'):
+			hosts(row,environmentGuid)
+			
+def hosts(row,environmentId):
+	hostName = row['hostName']
+	hostData = {
+		'Name': hostName,
+		'EnvironmentID': environmentId
+	}
+	existingObjects = plutora.listToDict(plutora.api("GET","environments/"+environmentId)['hosts'], "name", "id")
+	if (hostName in existingObjects):	# Exists
+		print "Host \"" + hostName + "\" exists, updating"
+		hostGuid = existingObjects[hostName]
+		hostData['Id'] = hostGuid
+		hostResponse = plutora.api("PUT", "hosts/"+hostGuid, hostData)
+	else:									# Does not exist
+		print "Host \"" + hostName + "\" does not exist, creating"
+		hostResponse = plutora.api("POST", "hosts", hostData)
+		hostApi = "hosts/" + hostResponse['id']
+		print "Created " + hostApi + " - " + hostResponse['name']
+		row['hostGuid']=hostResponse['id']
+		hostGuid = hostResponse['id']
+	
 
 def releases(rowReader):
 	existingObjects = plutora.listToDict(plutora.api("GET","releases"), "identifier", "id")
@@ -134,12 +159,12 @@ def releases(rowReader):
 		}		
 		# Does the named object exist?
 		if (row['Identifier'] in existingObjects):	# Exists
-			print "\"" + row['Identifier']+ "\" exists, updating"
+			print "Release \"" + row['Identifier']+ "\" exists, updating"
 			releaseGuid = existingObjects[row['Identifier']]
 			releaseData['Id'] = releaseGuid
 			releaseResponse = plutora.api("PUT", "releases/"+releaseGuid, releaseData)
 		else:									# Does not exist
-			print "\"" + row['Identifier']+ "\" does not exist, creating"
+			print "Release \"" + row['Identifier']+ "\" does not exist, creating"
 			releaseResponse = plutora.api("POST", "releases", releaseData)
 			releaseApi = "releases/" + releaseResponse['id']
 			print "Created " + releaseApi + " - " + releaseResponse['Identifier']
