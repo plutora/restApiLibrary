@@ -210,7 +210,7 @@ objectFields = {
 	]
 }
 
-def getComponentVersion(path):
+def getComponentId(path):
 	# Returns the GUID of the component at the path /environmentName/hostName/layerType/componentName:
 	#
 	# path = {

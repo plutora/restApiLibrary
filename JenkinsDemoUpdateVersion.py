@@ -6,7 +6,7 @@ import plutora
 from optparse import OptionParser
 
 def updateVersion(version,path):
-	componentGuid = plutora.getComponentVersion(path)
+	componentGuid = plutora.getComponentId(path)
 	layerData = plutora.api("GET","layers/"+componentGuid)
 	layerData['version']=version
 	plutora.api("PUT","layers/"+componentGuid,layerData)

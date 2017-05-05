@@ -184,7 +184,7 @@ if False: # Set test value to True to run example
 		"layerType": "Application",
 		"componentName": "JenkinsWebDemo"
 	}
-	componentGuid = plutora.getComponentVersion(path)
+	componentGuid = plutora.getComponentId(path)
 	layerData = plutora.api("GET","layers/"+componentGuid)
 	layerData['version']="1.0-testApi"
 	plutora.api("PUT","layers/"+componentGuid,layerData)
