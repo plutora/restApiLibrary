@@ -177,7 +177,7 @@ if False: # Set test value to True to run example
 		
 		delEnvInfile.close()
 if False: # Set test value to True to run example
-	## Set component version
+	## Set a component version
 	path = {
 		"environmentName": "Jenkins - DEV",
 		"hostName": "jenkinsDemoDev",

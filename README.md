@@ -3,9 +3,12 @@ Python 2.7 code to help users develop scripts to load data and create objects in
 ## Plutora REST API Python Library
 The Python script [plutora.py](plutora.py) provides helper functions for creating Plutora REST API scripts.  These include:
 - Read in credentials from a file
-- Wrapper to make REST calls
-- Transform an array response into a look up table
-- Look up GUID by object path and name
+- getAccessToken(): return access token
+- api(verb, api, data=""): Wrapper to make REST calls
+- listToDict(list, key, value): Transform an array response into a look up table
+- guidByPathAndName(path, name, field="name"): Look up GUID by object path and name
+- getComponentId(path): Return the layer GUID where a component is defined.  Useful for getting and setting component versions.
+- objectFields: Data structure schema for Plutora objects
 
 ## Plutora REST API Python Samples
 The Python script [apiSamples.py](apiSamples.py) provides example calls that illustrate how to interact with the Plutora REST API.  These include:
@@ -17,6 +20,7 @@ The Python script [apiSamples.py](apiSamples.py) provides example calls that ill
 - Delete an Enviroment with DELETE
 - Create Environments from CSV file and document the results in a new CSV file with the Enviroment GUID
 - Delete the Environments created above by loading the CSV which includes the GUIDs to be deleted
+- Set a component version
 
 ## Instructions
 - Create a **credentials.cfg** file from [credentials.cfg_template](credentials.cfg_template), adding your credentials and Plutora instance details.  Not that if you leave the password blank, you will be prompted for it at the command line.
