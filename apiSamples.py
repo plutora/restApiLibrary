@@ -160,7 +160,7 @@ if False: # Set test value to True to run example
 		# StopIteration
 	#
 	import glob,csv
-	for file in glob.glob('envsOut*.csv'):
+	for file in glob.glob('environments20170424231824.csv'):
 		print "Loading file: " + file
 		# Load CSV file	
 		delEnvInfile = open(file, 'r')
@@ -175,4 +175,16 @@ if False: # Set test value to True to run example
 			print "Deleting " + envApi
 			plutora.api("DELETE", envApi)
 		
-		delEnvInfile.close()	
+		delEnvInfile.close()
+if False: # Set test value to True to run example
+	## Set component version
+	path = {
+		"environmentName": "Jenkins - DEV",
+		"hostName": "jenkinsDemoDev",
+		"layerType": "Application",
+		"componentName": "JenkinsWebDemo"
+	}
+	componentGuid = plutora.getComponentVersion(path)
+	layerData = plutora.api("GET","layers/"+componentGuid)
+	layerData['version']="1.0-testApi"
+	plutora.api("PUT","layers/"+componentGuid,layerData)

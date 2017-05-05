@@ -209,3 +209,30 @@ objectFields = {
 		{"name": "ReleaseProjectType", "required": True, "lookup": False, "values": ["IsProject","NotIsProject","None"]}
 	]
 }
+
+def getComponentVersion(path):
+	# Returns the GUID of the component at the path /environmentName/hostName/layerType/componentName:
+	#
+	# path = {
+	# 	environmentName: <environmentName>,
+	# 	hostName: <hostName>,
+	# 	layerType: <layerTypeName>, # As named in Settings> Customizations> Environments> Stack Layer
+	# 	componentName: <componentName>
+	# }
+	environments = listToDict(api("GET","environments"), "name", "id")
+	environmentGuid = environments[path['environmentName']]
+	environmentData = api("GET","environments/"+environmentGuid)
+	hosts = environmentData['hosts']
+	layers = []
+	stackLayerID=""
+	for host in hosts:
+		if (host['name']==path['hostName']):
+			layers = host['layers']
+			break
+	for layer in layers:
+		if (layer['stackLayer']==path['layerType'] and layer['componentName']==path['componentName']):
+			componentId=layer['id']
+			break
+	return componentId
+	
+
