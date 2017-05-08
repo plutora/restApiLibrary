@@ -53,6 +53,8 @@ def exportObjects(filename,objectType,filter):
 					# "isAllowEdit":objectResponse['isAllowEdit'],
 					# "inMyOrganization":objectResponse['inMyOrganization']
 				}
+				print "Writing " + object[filterKey]
+				csvfileWriter.writerow(row)
 			elif (objectType=="environments"):
 				row = {
 					"name": objectResponse['name'],
@@ -67,6 +69,24 @@ def exportObjects(filename,objectType,filter):
 					"color": objectResponse['color'],
 					"isSharedEnvironment": objectResponse['isSharedEnvironment']
 				}
+				print "Writing " + object[filterKey]
+				hosts = objectResponse['hosts']
+				if (len(hosts)==0):
+					csvfileWriter.writerow(row)
+				for host in hosts:
+					print '\t host: ' + host['name']
+					row['hostName'] = host['name']
+					layers = host['layers']
+					if (len(layers)==0):
+						csvfileWriter.writerow(row)
+					for layer in layers:
+						print '\t\t layer: ' + layer['stackLayer']
+						row['StackLayer'] = layer['stackLayer']
+						print '\t\t\t component: ' + layer['componentName']
+						row['componentName'] = layer['componentName']
+						print '\t\t\t\t version' # + layer['version'] or ""
+						row['version'] = layer['version'] or ""
+						csvfileWriter.writerow(row)
 			elif (objectType=="releases"):
 				row = {
 					"identifier": objectResponse['identifier'],
@@ -85,8 +105,8 @@ def exportObjects(filename,objectType,filter):
 					"plutoraReleaseType": objectResponse['plutoraReleaseType'],
 					"releaseProjectType": objectResponse['releaseProjectType']
 				}
-			print "Writing " + object[filterKey]
-			csvfileWriter.writerow(row)
+				print "Writing " + object[filterKey]
+				csvfileWriter.writerow(row)
 	csvfile.close()
 
 import sys, getopt

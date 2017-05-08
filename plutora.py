@@ -214,7 +214,7 @@ objectFields = {
 		{"name": "isSharedEnvironment", "required": True, "lookup": "", "values": []},
 		{"name": "hostName", "required": False, "lookup": "", "values": []},
 		{"name": "StackLayer", "required": False, "lookup": "lookupfields/StackLayer", "values": []},
-		{"name": "ComponentName", "required": False, "lookup": "", "values": []},
+		{"name": "componentName", "required": False, "lookup": "", "values": []},
 		{"name": "version", "required": False, "lookup": "", "values": []}
 	],
 	"releases" : [

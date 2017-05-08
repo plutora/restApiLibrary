@@ -13,7 +13,7 @@
 #	Environments:
 #		Required:	*                    *      *                           *             *                 *     *
 #		ID Lookup:	                            *                           *             *                                                    *
-#					name,description,url,vendor,linkedSystem,environmentMgr,UsageWorkItem,EnvironmentStatus,color,isSharedEnvironment,hostName,StackLayer,StackLayerType,ComponentName,Version
+#					name,description,url,vendor,linkedSystem,environmentMgr,UsageWorkItem,EnvironmentStatus,color,isSharedEnvironment,hostName,StackLayer,componentName,version
 #
 #	Releases:
 #		Required:	*          *            *           *        *                 *                *                 *             *            *                     *                  *
