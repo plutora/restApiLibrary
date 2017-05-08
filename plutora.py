@@ -171,10 +171,10 @@ def getComponentId(path):
 	# Returns the GUID of the component at the path /environmentName/hostName/layerType/componentName:
 	#
 	# path = {
-	# 	environmentName: <environmentName>,
-	# 	hostName: <hostName>,
-	# 	layerType: <layerTypeName>, # As named in Settings> Customizations> Environments> Stack Layer
-	# 	componentName: <componentName>
+	# 	'environmentName': <environmentName>,
+	# 	'hostName': <hostName>,
+	# 	'layerType': <layerTypeName>, # As named in Settings> Customizations> Environments> Stack Layer
+	# 	'componentName': <componentName>
 	# }
 	environments = listToDict(api("GET","environments"), "name", "id")
 	environmentGuid = environments[path['environmentName']]
@@ -182,6 +182,7 @@ def getComponentId(path):
 	hosts = environmentData['hosts']
 	layers = []
 	stackLayerID=""
+	componentId=""
 	for host in hosts:
 		if (host['name']==path['hostName']):
 			layers = host['layers']

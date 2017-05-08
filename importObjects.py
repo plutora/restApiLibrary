@@ -72,7 +72,7 @@ def environments(rowReader):
 	systems = plutora.listToDict(plutora.api("GET","systems"), "name", "id")
 	useFor = plutora.listToDict(plutora.api("GET","lookupfields/UsedForWorkItem"), "value", "id")
 	envStatatus = plutora.listToDict(plutora.api("GET","lookupfields/EnvironmentStatus"), "value", "id")
-	layers = plutora.listToDict(plutora.api("GET","lookupfields/StackLayer"), "value", "id")
+	stackLayers = plutora.listToDict(plutora.api("GET","lookupfields/StackLayer"), "value", "id")
 	for row in rowReader:
 		# Common environment data whether exists or not
 		environmentData = {
@@ -86,8 +86,11 @@ def environments(rowReader):
 			'EnvironmentStatusId': envStatatus[row['EnvironmentStatus']],
 			'color': row['color'],
 			'isSharedEnvironment': row['isSharedEnvironment']
-			# TODO: add hosts, layers and components
-		}		
+			# 'hostName': row['hostName'],
+			# 'stackLayerID': layers[row['StackLayer']],
+			# 'componentName': row['componentName'],
+			# 'version': row['version']
+		}
 		# Does the named object exist?
 		if (row['name'] in existingObjects):	# Exists
 			print "Environment \"" + row['name']+ "\" exists, updating"
@@ -101,12 +104,14 @@ def environments(rowReader):
 			print "Created " + environmentApi + " - " + environmentResponse['name']
 			row['environmentGuid']=environmentResponse['id']
 			environmentGuid = environmentResponse['id']
+			# Add new object to the list
+			existingObjects[environmentResponse['name']] = environmentGuid
 		 
 		# Add host
 		if row.get('hostName'):
-			hosts(row,environmentGuid)
+			hosts(row,environmentGuid,stackLayers)
 			
-def hosts(row,environmentId):
+def hosts(row,environmentId,stackLayers):
 	hostName = row['hostName']
 	hostData = {
 		'name': hostName,
@@ -125,7 +130,33 @@ def hosts(row,environmentId):
 		print "Created " + hostApi + " - " + hostResponse['name']
 		row['hostGuid']=hostResponse['id']
 		hostGuid = hostResponse['id']
-	
+	if row.get('StackLayer'):
+		layers(row,environmentId,hostGuid,stackLayers[row['StackLayer']])
+				
+def layers(row,environmentGuid,hostGuid,stackLayerID):
+	layerData = {
+		'componentName': row['componentName'],
+		'hostID': hostGuid,
+		'environmentID': environmentGuid,
+		'stackLayerID': stackLayerID,
+		'version': row['version']
+	}
+	# Does component already exist?
+	path = {
+		'environmentName': row['name'],
+		'hostName': row['hostName'],
+		'layerType': row['StackLayer'],
+		'componentName': row['componentName']
+	}
+	componentId = plutora.getComponentId(path)
+	if (componentId):						# Exists
+		componentResponse = plutora.api("GET", "layers/"+componentId)
+		print "Component \"" + componentResponse['componentName'] + "\" exists, updating"
+		componentResponse['version'] = row['version']
+		plutora.api("PUT", "layers/"+componentId, componentResponse)
+	else:									# Does not exist
+		print "Component \"" + row['componentName'] + "\" does not exist, creating"
+		layerResponse = plutora.api("POST", "layers", layerData)
 
 def releases(rowReader):
 	existingObjects = plutora.listToDict(plutora.api("GET","releases"), "identifier", "id")
