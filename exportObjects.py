@@ -43,11 +43,11 @@ def exportObjects(filename,objectType,filter):
 			objectResponse = plutora.api("GET",objectType+"/"+object['id'])
 			if (objectType=="systems"):
 				row = {
-					"Name":objectResponse['name'],
-					"Vendor":objectResponse['vendor'],
-					"Status":objectResponse['status'],
+					"name":objectResponse['name'],
+					"vendor":objectResponse['vendor'],
+					"status":objectResponse['status'],
 					# TODO: handle hiearchy
-					"Organization":organizations[objectResponse['organizationId']]
+					"organization":organizations[objectResponse['organizationId']]
 					# TODO: enable description... bad characters codes
 					#"description":objectResponse.get('description',''),
 					# "isAllowEdit":objectResponse['isAllowEdit'],
@@ -55,35 +55,35 @@ def exportObjects(filename,objectType,filter):
 				}
 			elif (objectType=="environments"):
 				row = {
-					"Name": objectResponse['name'],
+					"name": objectResponse['name'],
 					# TODO: handle description
-					#"Description": objectResponse.get('description',''),
-					"URL": objectResponse.get('url',''),
-					"Vendor": objectResponse['vendor'],
-					"LinkedSystem": systems[objectResponse['linkedSystemId']],
-					"EnvironmentMgr": objectResponse.get('environmentMgr',''),
-					"UsageWorkItem": useFor[objectResponse['usageWorkItemId']],
+					#"description": objectResponse.get('description',''),
+					"url": objectResponse.get('url',''),
+					"vendor": objectResponse['vendor'],
+					"linkedSystem": systems[objectResponse['linkedSystemId']],
+					"environmentMgr": objectResponse.get('environmentMgr',''),
+					"usageWorkItem": useFor[objectResponse['usageWorkItemId']],
 					"EnvironmentStatus": envStatatus[objectResponse['environmentStatusId']],
-					"Color": objectResponse['color'],
-					"IsSharedEnvironment": objectResponse['isSharedEnvironment']
+					"color": objectResponse['color'],
+					"isSharedEnvironment": objectResponse['isSharedEnvironment']
 				}
 			elif (objectType=="releases"):
 				row = {
-					"Identifier": objectResponse['identifier'],
-					"Name": objectResponse['name'],
+					"identifier": objectResponse['identifier'],
+					"name": objectResponse['name'],
 					# TODO: handle summary
-					#"Summary": objectResponse.get('Summary',''),
+					#"summary": objectResponse.get('summary',''),
 					"ReleaseType": releaseTypes[objectResponse['releaseTypeId']],
-					"Location": objectResponse['location'],
+					"location": objectResponse['location'],
 					"ReleaseStatusType": releaseStatusTypes[objectResponse['releaseStatusTypeId']],
 					"ReleaseRiskLevel": releaseRiskLevels[objectResponse['releaseRiskLevelId']],
-					"ImplementationDate": objectResponse['implementationDate'],
-					"DisplayColor": objectResponse['displayColor'],
-					"Organization": organizations[objectResponse['organizationId']],
+					"implementationDate": objectResponse['implementationDate'],
+					"displayColor": objectResponse['displayColor'],
+					"organization": organizations[objectResponse['organizationId']],
 					"Manager": managers.get(objectResponse['managerId']),
 					"ParentRelease": parentReleases.get(objectResponse['parentReleaseId']),
-					"PlutoraReleaseType": objectResponse['plutoraReleaseType'],
-					"ReleaseProjectType": objectResponse['releaseProjectType']
+					"plutoraReleaseType": objectResponse['plutoraReleaseType'],
+					"releaseProjectType": objectResponse['releaseProjectType']
 				}
 			print "Writing " + object[filterKey]
 			csvfileWriter.writerow(row)
@@ -95,7 +95,7 @@ def main(argv):
 	filename = ''
 	objectType = ''
 	filter = ''
-	usage = 'USAGE: python importObjects.py --csvFile <input filePath, no extension> --objectType <systems|environments|releases> --filter <string to match>'
+	usage = 'USAGE: python importObjects.py --csvFile <output filePath, no extension> --objectType <systems|environments|releases> --filter <string to match>'
 	try:
 		opts, args = getopt.getopt(argv,"hf:t:m:",["csvFile=","objectType=","filter="])
 	except getopt.GetoptError:

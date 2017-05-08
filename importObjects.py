@@ -9,16 +9,16 @@
 #	Systems:
 #		Required:	*    *      *      *
 #		ID Lookup:	                   *
-#				 	Name,Vendor,Status,Organization,Description
+#				 	name,vendor,status,organization,description
 #	Environments:
 #		Required:	*                    *      *                           *             *                 *     *
 #		ID Lookup:	                            *                           *             *                                                    *
-#					Name,Description,URL,Vendor,LinkedSystem,EnvironmentMgr,UsageWorkItem,EnvironmentStatus,Color,IsSharedEnvironment,hostName,StackLayer,StackLayerType,ComponentName,Version
+#					name,description,url,vendor,linkedSystem,environmentMgr,usageWorkItem,EnvironmentStatus,color,isSharedEnvironment,hostName,StackLayer,StackLayerType,ComponentName,Version
 #
 #	Releases:
 #		Required:	*          *            *           *        *                 *                *                 *             *            *                     *                  *
 #		ID Lookup:	                        *                    *                 *                                                *            *       *
-#					Identifier,Name,Summary,ReleaseType,Location,ReleaseStatusType,ReleaseRiskLevel,ImplementationDate,DisplayColor,Organization,Manager,ParentRelease,PlutoraReleaseType,ReleaseProjectType
+#					identifier,name,summary,ReleaseType,location,ReleaseStatusType,ReleaseRiskLevel,implementationDate,displayColor,organization,Manager,ParentRelease,plutoraReleaseType,releaseProjectType
 import plutora
 
 def getRows(fileName, requiredFieldNames):
@@ -47,21 +47,21 @@ def systems(rowReader):
 		# TODO: Validate fields, status Active or Inactive only
 		# Common system data whether exists or not
 		systemData = {
-			'Name': row['Name'],
-			'Description': row['Description'],
-			'Status': row['Status'],
+			'name': row['name'],
+			'description': row['description'],
+			'status': row['status'],
 			# TODO: handle hierarchy
-			'OrganizationId': organizations[row['Organization']],
-			'Vendor': row['Vendor']
+			'OrganizationId': organizations[row['organization']],
+			'vendor': row['vendor']
 		}		
 		# Does the named object exist?
-		if (row['Name'] in existingObjects):	# Exists
-			print "System \"" + row['Name']+ "\" exists, updating"
-			systemGuid = existingObjects[row['Name']]
+		if (row['name'] in existingObjects):	# Exists
+			print "System \"" + row['name']+ "\" exists, updating"
+			systemGuid = existingObjects[row['name']]
 			systemData['Id'] = systemGuid
 			systemResponse = plutora.api("PUT", "systems/"+systemGuid, systemData)
 		else:									# Does not exist
-			print "System \"" + row['Name']+ "\" does not exist, creating"
+			print "System \"" + row['name']+ "\" does not exist, creating"
 			systemResponse = plutora.api("POST", "systems", systemData)
 			systemApi = "systems/" + systemResponse['id']
 			print "Created " + systemApi + " - " + systemResponse['name']
@@ -76,26 +76,26 @@ def environments(rowReader):
 	for row in rowReader:
 		# Common environment data whether exists or not
 		environmentData = {
-			'Name': row['Name'],
-			'Description': row['Description'],
-			'URL': row['URL'],
-			'Vendor': row['Vendor'],
-			'LinkedSystemId': systems[row['LinkedSystem']],
-			'EnvironmentMgr': row['EnvironmentMgr'],
-			'UsageWorkItemId': useFor[row['UsageWorkItem']],
+			'name': row['name'],
+			'description': row['description'],
+			'url': row['url'],
+			'vendor': row['vendor'],
+			'LinkedSystemId': systems[row['linkedSystem']],
+			'environmentMgr': row['environmentMgr'],
+			'UsageWorkItemId': useFor[row['usageWorkItem']],
 			'EnvironmentStatusId': envStatatus[row['EnvironmentStatus']],
-			'Color': row['Color'],
-			'IsSharedEnvironment': row['IsSharedEnvironment']
+			'color': row['color'],
+			'isSharedEnvironment': row['isSharedEnvironment']
 			# TODO: add hosts, layers and components
 		}		
 		# Does the named object exist?
-		if (row['Name'] in existingObjects):	# Exists
-			print "Environment \"" + row['Name']+ "\" exists, updating"
-			environmentGuid = existingObjects[row['Name']]
+		if (row['name'] in existingObjects):	# Exists
+			print "Environment \"" + row['name']+ "\" exists, updating"
+			environmentGuid = existingObjects[row['name']]
 			environmentData['Id'] = environmentGuid
 			environmentResponse = plutora.api("PUT", "environments/"+environmentGuid, environmentData)
 		else:									# Does not exist
-			print "Environment \"" + row['Name']+ "\" does not exist, creating"
+			print "Environment \"" + row['name']+ "\" does not exist, creating"
 			environmentResponse = plutora.api("POST", "environments", environmentData)
 			environmentApi = "environments/" + environmentResponse['id']
 			print "Created " + environmentApi + " - " + environmentResponse['name']
@@ -109,7 +109,7 @@ def environments(rowReader):
 def hosts(row,environmentId):
 	hostName = row['hostName']
 	hostData = {
-		'Name': hostName,
+		'name': hostName,
 		'EnvironmentID': environmentId
 	}
 	existingObjects = plutora.listToDict(plutora.api("GET","environments/"+environmentId)['hosts'], "name", "id")
@@ -140,34 +140,34 @@ def releases(rowReader):
 	for row in rowReader:
 		# Common release data whether exists or not
 		releaseData = {
-			'Identifier': row['Identifier'],
-			'Name': row['Name'],
-			'Summary': row['Summary'],
+			'identifier': row['identifier'],
+			'name': row['name'],
+			'summary': row['summary'],
 			'ReleaseTypeId': releaseTypes[row['ReleaseType']],
-			'Location': row['Location'] or "NA",
+			'location': row['location'] or "NA",
 			'ReleaseStatusTypeId': releaseStatusTypes[row['ReleaseStatusType']],
 			'ReleaseRiskLevelId': releaseRiskLevels[row['ReleaseRiskLevel']],
-			'ImplementationDate': row['ImplementationDate'],
-			'DisplayColor': row['DisplayColor'],
-			'OrganizationId': organizations[row['Organization']],
+			'implementationDate': row['implementationDate'],
+			'displayColor': row['displayColor'],
+			'OrganizationId': organizations[row['organization']],
 			# TODO: temporary workaround for REST required field which is not required in UI
 			'ManagerId': managers.get(row['Manager'] or users[0]['userName']),
 			'ParentReleaseId': parentReleases.get(row['ParentRelease']),
-			'PlutoraReleaseType': row['PlutoraReleaseType'],
-			'ReleaseProjectType': row['ReleaseProjectType']
+			'plutoraReleaseType': row['plutoraReleaseType'],
+			'releaseProjectType': row['releaseProjectType']
 			# TODO: Additional items
 		}		
 		# Does the named object exist?
-		if (row['Identifier'] in existingObjects):	# Exists
-			print "Release \"" + row['Identifier']+ "\" exists, updating"
-			releaseGuid = existingObjects[row['Identifier']]
+		if (row['identifier'] in existingObjects):	# Exists
+			print "Release \"" + row['identifier']+ "\" exists, updating"
+			releaseGuid = existingObjects[row['identifier']]
 			releaseData['Id'] = releaseGuid
 			releaseResponse = plutora.api("PUT", "releases/"+releaseGuid, releaseData)
 		else:									# Does not exist
-			print "Release \"" + row['Identifier']+ "\" does not exist, creating"
+			print "Release \"" + row['identifier']+ "\" does not exist, creating"
 			releaseResponse = plutora.api("POST", "releases", releaseData)
 			releaseApi = "releases/" + releaseResponse['id']
-			print "Created " + releaseApi + " - " + releaseResponse['Identifier']
+			print "Created " + releaseApi + " - " + releaseResponse['identifier']
 			row['releaseGuid']=releaseResponse['id']
 			
 import sys, getopt
