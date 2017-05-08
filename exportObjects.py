@@ -62,7 +62,7 @@ def exportObjects(filename,objectType,filter):
 					"vendor": objectResponse['vendor'],
 					"linkedSystem": systems[objectResponse['linkedSystemId']],
 					"environmentMgr": objectResponse.get('environmentMgr',''),
-					"usageWorkItem": useFor[objectResponse['usageWorkItemId']],
+					"UsageWorkItem": useFor[objectResponse['usageWorkItemId']],
 					"EnvironmentStatus": envStatatus[objectResponse['environmentStatusId']],
 					"color": objectResponse['color'],
 					"isSharedEnvironment": objectResponse['isSharedEnvironment']

@@ -13,7 +13,7 @@
 #	Environments:
 #		Required:	*                    *      *                           *             *                 *     *
 #		ID Lookup:	                            *                           *             *                                                    *
-#					name,description,url,vendor,linkedSystem,environmentMgr,usageWorkItem,EnvironmentStatus,color,isSharedEnvironment,hostName,StackLayer,StackLayerType,ComponentName,Version
+#					name,description,url,vendor,linkedSystem,environmentMgr,UsageWorkItem,EnvironmentStatus,color,isSharedEnvironment,hostName,StackLayer,StackLayerType,ComponentName,Version
 #
 #	Releases:
 #		Required:	*          *            *           *        *                 *                *                 *             *            *                     *                  *
@@ -82,7 +82,7 @@ def environments(rowReader):
 			'vendor': row['vendor'],
 			'LinkedSystemId': systems[row['linkedSystem']],
 			'environmentMgr': row['environmentMgr'],
-			'UsageWorkItemId': useFor[row['usageWorkItem']],
+			'UsageWorkItemId': useFor[row['UsageWorkItem']],
 			'EnvironmentStatusId': envStatatus[row['EnvironmentStatus']],
 			'color': row['color'],
 			'isSharedEnvironment': row['isSharedEnvironment']

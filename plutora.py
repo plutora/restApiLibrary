@@ -195,44 +195,43 @@ def getComponentId(path):
 objectFields = {
 
 	"systems" : [
-		{"name": "name", "required": True, "lookup": False, "values": []},
-		{"name": "vendor", "required": True, "lookup": False, "values": []},
-		{"name": "status", "required": True, "lookup": False, "values": ["Active","Inactive"]},
-		{"name": "organization", "required": True, "lookup": True, "values": []},
-		{"name": "description", "required": True, "lookup": False, "values": []}
+		{"name": "name", "required": True, "lookup": "", "values": []},
+		{"name": "vendor", "required": True, "lookup": "", "values": []},
+		{"name": "status", "required": True, "lookup": "", "values": ["Active","Inactive"]},
+		{"name": "organization", "required": True, "lookup": "organizations", "values": []},
+		{"name": "description", "required": True, "lookup": "", "values": []}
 	],
 	"environments" : [
-		{"name": "name", "required": True, "lookup": False, "values": []},
-		{"name": "description", "required": False, "lookup": False, "values": []},
-		{"name": "url", "required": False, "lookup": False, "values": []},
-		{"name": "vendor", "required": True, "lookup": False, "values": []},
-		{"name": "linkedSystem", "required": True, "lookup": True, "values": []},
-		{"name": "environmentMgr", "required": False, "lookup": False, "values": []},
-		{"name": "usageWorkItem", "required": True, "lookup": True, "values": []},
-		{"name": "EnvironmentStatus", "required": True, "lookup": True, "values": []},
-		{"name": "color", "required": True, "lookup": False, "values": []},
-		{"name": "isSharedEnvironment", "required": True, "lookup": False, "values": []},
-		{"name": "hostName", "required": False, "lookup": False, "values": []},
-		{"name": "StackLayer", "required": False, "lookup": True, "values": []},
-		{"name": "StackLayerType", "required": False, "lookup": False, "values": []},
-		{"name": "ComponentName", "required": False, "lookup": False, "values": []},
-		{"name": "version", "required": False, "lookup": False, "values": []}
+		{"name": "name", "required": True, "lookup": "", "values": []},
+		{"name": "description", "required": False, "lookup": "", "values": []},
+		{"name": "url", "required": False, "lookup": "", "values": []},
+		{"name": "vendor", "required": True, "lookup": "", "values": []},
+		{"name": "linkedSystem", "required": True, "lookup": "systems", "values": []},
+		{"name": "environmentMgr", "required": False, "lookup": "", "values": []},
+		{"name": "UsageWorkItem", "required": True, "lookup": "lookupfields/UsedForWorkItem", "values": []},
+		{"name": "EnvironmentStatus", "required": True, "lookup": "lookupfields/EnvironmentStatus", "values": []},
+		{"name": "color", "required": True, "lookup": "", "values": []},
+		{"name": "isSharedEnvironment", "required": True, "lookup": "", "values": []},
+		{"name": "hostName", "required": False, "lookup": "", "values": []},
+		{"name": "StackLayer", "required": False, "lookup": "lookupfields/StackLayer", "values": []},
+		{"name": "ComponentName", "required": False, "lookup": "", "values": []},
+		{"name": "version", "required": False, "lookup": "", "values": []}
 	],
 	"releases" : [
-		{"name": "identifier", "required": True, "lookup": False, "values": []},
-		{"name": "name", "required": True, "lookup": False, "values": []},
-		{"name": "summary", "required": False, "lookup": False, "values": []},
-		{"name": "ReleaseType", "required": True, "lookup": True, "values": []},
-		{"name": "location", "required": True, "lookup": False, "values": []},
+		{"name": "identifier", "required": True, "lookup": "", "values": []},
+		{"name": "name", "required": True, "lookup": "", "values": []},
+		{"name": "summary", "required": False, "lookup": "", "values": []},
+		{"name": "ReleaseType", "required": True, "lookup": "lookupfields/ReleaseType", "values": []},
+		{"name": "location", "required": True, "lookup": "", "values": []},
 		{"name": "ReleaseStatusType", "required": True, "lookup": True, "values": ["Active","Inactive"]},
-		{"name": "ReleaseRiskLevel", "required": True, "lookup": True, "values": []},
-		{"name": "implementationDate", "required": True, "lookup": False, "values": []},
-		{"name": "displayColor", "required": True, "lookup": False, "values": []},
-		{"name": "organization", "required": True, "lookup": True, "values": []},
-		{"name": "Manager", "required": True, "lookup": True, "values": []},
-		{"name": "ParentRelease", "required": False, "lookup": True, "values": []},
-		{"name": "plutoraReleaseType", "required": True, "lookup": False, "values": ["Enterprise","Integrated","Independent"]},
-		{"name": "releaseProjectType", "required": True, "lookup": False, "values": ["IsProject","NotIsProject","None"]}
+		{"name": "ReleaseRiskLevel", "required": True, "lookup": "lookupfields/ReleaseRiskLevel", "values": []},
+		{"name": "implementationDate", "required": True, "lookup": "", "values": []},
+		{"name": "displayColor", "required": True, "lookup": "", "values": []},
+		{"name": "organization", "required": True, "lookup": "organizations", "values": []},
+		{"name": "Manager", "required": True, "lookup": "users", "values": []},
+		{"name": "ParentRelease", "required": False, "lookup": "releases", "values": []},
+		{"name": "plutoraReleaseType", "required": True, "lookup": "", "values": ["Enterprise","Integrated","Independent"]},
+		{"name": "releaseProjectType", "required": True, "lookup": "", "values": ["IsProject","NotIsProject","None"]}
 	]
 }
 
