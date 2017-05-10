@@ -47,9 +47,8 @@ def exportObjects(filename,objectType,filter):
 					"vendor":objectResponse['vendor'],
 					"status":objectResponse['status'],
 					# TODO: handle hiearchy
-					"organization":organizations[objectResponse['organizationId']]
-					# TODO: enable description... bad characters codes
-					#"description":objectResponse.get('description',''),
+					"organization":organizations[objectResponse['organizationId']],
+					"description":objectResponse.get('description','').encode('utf-8').strip() # handle unicode characters
 					# "isAllowEdit":objectResponse['isAllowEdit'],
 					# "inMyOrganization":objectResponse['inMyOrganization']
 				}
@@ -58,8 +57,7 @@ def exportObjects(filename,objectType,filter):
 			elif (objectType=="environments"):
 				row = {
 					"name": objectResponse['name'],
-					# TODO: handle description
-					#"description": objectResponse.get('description',''),
+					"description": objectResponse.get('description','').encode('utf-8').strip() # handle unicode characters,
 					"url": objectResponse.get('url',''),
 					"vendor": objectResponse['vendor'],
 					"linkedSystem": systems[objectResponse['linkedSystemId']],
@@ -91,8 +89,7 @@ def exportObjects(filename,objectType,filter):
 				row = {
 					"identifier": objectResponse['identifier'],
 					"name": objectResponse['name'],
-					# TODO: handle summary
-					#"summary": objectResponse.get('summary',''),
+					"summary": objectResponse.get('summary','').encode('utf-8').strip() # handle unicode characters,
 					"ReleaseType": releaseTypes[objectResponse['releaseTypeId']],
 					"location": objectResponse['location'],
 					"ReleaseStatusType": releaseStatusTypes[objectResponse['releaseStatusTypeId']],
