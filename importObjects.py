@@ -51,7 +51,7 @@ def systems(rowReader):
 			'description': row['description'],
 			'status': row['status'],
 			# TODO: handle hierarchy
-			'OrganizationId': organizations[row['organization']],
+			'organizationId': organizations.get(row['organization']),
 			'vendor': row['vendor']
 		}		
 		# Does the named object exist?
@@ -59,6 +59,10 @@ def systems(rowReader):
 			print "System \"" + row['name']+ "\" exists, updating"
 			systemGuid = existingObjects[row['name']]
 			systemData['id'] = systemGuid
+			existingSysData = plutora.api("GET", "systems/"+systemGuid)
+			for field in systemData:
+				# If the spreadsheet value is blank, use the existing value from Plutora
+				systemData[field] = systemData[field] or existingSysData[field]
 			systemResponse = plutora.api("PUT", "systems/"+systemGuid, systemData)
 		else:									# Does not exist
 			print "System \"" + row['name']+ "\" does not exist, creating"
@@ -80,22 +84,22 @@ def environments(rowReader):
 			'description': row['description'],
 			'url': row['url'],
 			'vendor': row['vendor'],
-			'LinkedSystemId': systems[row['linkedSystem']],
+			'linkedSystemId': systems.get(row['linkedSystem']),
 			'environmentMgr': row['environmentMgr'],
-			'UsageWorkItemId': useFor[row['UsageWorkItem']],
-			'EnvironmentStatusId': envStatatus[row['EnvironmentStatus']],
+			'usageWorkItemId': useFor.get(row['UsageWorkItem']),
+			'environmentStatusId': envStatatus.get(row['EnvironmentStatus']),
 			'color': row['color'],
 			'isSharedEnvironment': row['isSharedEnvironment']
-			# 'hostName': row['hostName'],
-			# 'stackLayerID': layers[row['StackLayer']],
-			# 'componentName': row['componentName'],
-			# 'version': row['version']
 		}
 		# Does the named object exist?
 		if (row['name'] in existingObjects):	# Exists
 			print "Environment \"" + row['name']+ "\" exists, updating"
 			environmentGuid = existingObjects[row['name']]
 			environmentData['id'] = environmentGuid
+			existingEnvData = plutora.api("GET", "environments/"+environmentGuid)
+			for field in environmentData:
+				# If the spreadsheet value is blank, use the existing value from Plutora
+				environmentData[field] = environmentData[field] or existingEnvData[field]
 			environmentResponse = plutora.api("PUT", "environments/"+environmentGuid, environmentData)
 		else:									# Does not exist
 			print "Environment \"" + row['name']+ "\" does not exist, creating"
@@ -174,16 +178,16 @@ def releases(rowReader):
 			'identifier': row['identifier'],
 			'name': row['name'],
 			'summary': row['summary'],
-			'ReleaseTypeId': releaseTypes[row['ReleaseType']],
+			'releaseTypeId': releaseTypes.get(row['ReleaseType']),
 			'location': row['location'] or "NA",
-			'ReleaseStatusTypeId': releaseStatusTypes[row['ReleaseStatusType']],
-			'ReleaseRiskLevelId': releaseRiskLevels[row['ReleaseRiskLevel']],
+			'releaseStatusTypeId': releaseStatusTypes.get(row['ReleaseStatusType']),
+			'releaseRiskLevelId': releaseRiskLevels.get(row['ReleaseRiskLevel']),
 			'implementationDate': row['implementationDate'],
 			'displayColor': row['displayColor'],
-			'OrganizationId': organizations[row['organization']],
+			'organizationId': organizations.get(row['organization']),
 			# TODO: temporary workaround for REST required field which is not required in UI
-			'ManagerId': managers.get(row['Manager'] or users[0]['userName']),
-			'ParentReleaseId': parentReleases.get(row['ParentRelease']),
+			'managerId': managers.get(row['Manager'] or users[0]['userName']),
+			'parentReleaseId': parentReleases.get(row['ParentRelease']),
 			'plutoraReleaseType': row['plutoraReleaseType'],
 			'releaseProjectType': row['releaseProjectType']
 			# TODO: Additional items
@@ -193,6 +197,10 @@ def releases(rowReader):
 			print "Release \"" + row['identifier']+ "\" exists, updating"
 			releaseGuid = existingObjects[row['identifier']]
 			releaseData['id'] = releaseGuid
+			existingRelData = plutora.api("GET", "releases/"+releaseGuid)
+			for field in releaseData:
+				# If the spreadsheet value is blank, use the existing value from Plutora
+				releaseData[field] = releaseData[field] or existingRelData[field]
 			releaseResponse = plutora.api("PUT", "releases/"+releaseGuid, releaseData)
 		else:									# Does not exist
 			print "Release \"" + row['identifier']+ "\" does not exist, creating"
