@@ -58,7 +58,7 @@ def systems(rowReader):
 		if (row['name'] in existingObjects):	# Exists
 			print "System \"" + row['name']+ "\" exists, updating"
 			systemGuid = existingObjects[row['name']]
-			systemData['Id'] = systemGuid
+			systemData['id'] = systemGuid
 			systemResponse = plutora.api("PUT", "systems/"+systemGuid, systemData)
 		else:									# Does not exist
 			print "System \"" + row['name']+ "\" does not exist, creating"
@@ -95,7 +95,7 @@ def environments(rowReader):
 		if (row['name'] in existingObjects):	# Exists
 			print "Environment \"" + row['name']+ "\" exists, updating"
 			environmentGuid = existingObjects[row['name']]
-			environmentData['Id'] = environmentGuid
+			environmentData['id'] = environmentGuid
 			environmentResponse = plutora.api("PUT", "environments/"+environmentGuid, environmentData)
 		else:									# Does not exist
 			print "Environment \"" + row['name']+ "\" does not exist, creating"
@@ -121,7 +121,7 @@ def hosts(row,environmentId,stackLayers):
 	if (hostName in existingObjects):	# Exists
 		print "Host \"" + hostName + "\" exists, updating"
 		hostGuid = existingObjects[hostName]
-		hostData['Id'] = hostGuid
+		hostData['id'] = hostGuid
 		hostResponse = plutora.api("PUT", "hosts/"+hostGuid, hostData)
 	else:									# Does not exist
 		print "Host \"" + hostName + "\" does not exist, creating"
@@ -192,7 +192,7 @@ def releases(rowReader):
 		if (row['identifier'] in existingObjects):	# Exists
 			print "Release \"" + row['identifier']+ "\" exists, updating"
 			releaseGuid = existingObjects[row['identifier']]
-			releaseData['Id'] = releaseGuid
+			releaseData['id'] = releaseGuid
 			releaseResponse = plutora.api("PUT", "releases/"+releaseGuid, releaseData)
 		else:									# Does not exist
 			print "Release \"" + row['identifier']+ "\" does not exist, creating"
