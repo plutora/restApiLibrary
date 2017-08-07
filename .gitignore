@@ -1,1 +1,3 @@
-apiFunctions_withCreds.py
+*.csv
+*.pyc
+*credentials.cfg
