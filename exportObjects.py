@@ -112,7 +112,7 @@ def main(argv):
 	filename = ''
 	objectType = ''
 	filter = ''
-	usage = 'USAGE: python importObjects.py --csvFile <output filePath, no extension> --objectType <systems|environments|releases> --filter <string to match>'
+	usage = 'USAGE: python exportObjects.py --csvFile <output filePath, no extension> --objectType <systems|environments|releases> --filter <string to match>'
 	try:
 		opts, args = getopt.getopt(argv,"hf:t:m:",["csvFile=","objectType=","filter="])
 	except getopt.GetoptError:
